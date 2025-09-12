@@ -3,7 +3,6 @@ import Layout from "../layouts/Layout.astro";
 import { db, Record, Reason, desc } from 'astro:db';
 
 if (Astro.request.method === 'POST') {
-  // Parse form data
   const formData = await Astro.request.formData();
   const reason = formData.get('reason');
   const recorded = new Date();
@@ -45,7 +44,9 @@ title="Sigi"
   records.map(({ id, recorded, reason }) => (
     <article class="bg-white p-4 mb-4 shadow rounded">
       <p>ID: {id}</p>
-      <p>Recorded: {recorded}</p>
+      <p>Recorded: {recorded.toLocaleString("uk-UA", {
+  timeZone: "Europe/Kyiv",
+})}</p>
       <p>Reason: {reason}</p>
     </article>
   ))
