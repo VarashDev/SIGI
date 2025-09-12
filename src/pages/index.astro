@@ -54,14 +54,14 @@ title="Sigi"
 <table class="min-w-full border border-gray-200 divide-y divide-gray-200">
   <thead class="bg-amber-200">
     <tr>
-      <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Time</th>
+      <th class="w-24 px-4 py-2 text-left text-sm font-semibold text-gray-700">Time</th>
       <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Reason</th>
     </tr>
   </thead>
   <tbody class="divide-y divide-gray-200">
     {todaysRecords.map((record, idx) => (
       <tr class={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-        <td class="px-4 py-2 text-sm text-gray-800">
+        <td class="w-24 px-4 py-2 text-sm text-gray-800">
           {record.recorded.toLocaleTimeString("uk-UA", {
             timeZone: "Europe/Kyiv",
             hour: "2-digit",
