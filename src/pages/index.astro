@@ -2,6 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import { db, Record, desc, eq, sql } from 'astro:db';
 
+const uaTime = new Date().toLocaleString("uk-UA", {
+  timeZone: "Europe/Kyiv",
+  dateStyle: "short",
+  timeStyle: "short",
+});
+
 if (Astro.request.method === 'POST') {
   const formData = await Astro.request.formData();
   const reason = formData.get('reason');
@@ -13,7 +19,7 @@ if (Astro.request.method === 'POST') {
 }
 
 // Render the new list of comments on each request
-const records = await db.select().from(Record).orderBy(desc(Record.id));;
+const records = await db.select().from(Record).orderBy(desc(Record.id));
 const result = await db
   .select({
     count: sql`count(*)`.as("count")
@@ -21,7 +27,8 @@ const result = await db
   .from(Record)
   .where(
     eq(sql`date(${Record.recorded}, '+3 hours')`, sql`date('now', '+3 hours')`)
-  );
+  )
+  .orderBy(desc(Record.id));
 
 const count = result[0].count;
 ---
@@ -30,8 +37,6 @@ title="Sigi"
 >
 
 <form method="POST" style="display: grid" class="rounded bg-amber-400 p-4">
-  <!-- <label for="reason">Reason</label>
-  <input id="reason" name="reason" required class="bg-white mb-4" /> -->
   <label for="reason">Reason</label>
   <select id="reason" name="reason" required class="bg-white mb-4 text-xl">
     <option value="Good morning">Good morning</option>
@@ -45,6 +50,7 @@ title="Sigi"
   <button type="submit" class="bg-amber-700 text-white text-xl font-bold rounded shadow py-2 px-4 mx-auto">Submit</button>
 </form>
 
+<h1 class="text-xl font-semibold m-4">{uaTime}</h1>
 <h2 class="text-2xl font-black m-4">Today: {count}</h2>
 
 {
