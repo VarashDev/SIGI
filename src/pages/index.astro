@@ -51,16 +51,16 @@ title="Sigi"
 <h1 class="text-xl font-semibold m-4">{uaDate}</h1>
 <h2 class="text-2xl font-black m-4">Today: {todaysCount}</h2>
 
+<ul>
 {
   todaysRecords.map(({ id, recorded, reason }) => (
-    <article class="bg-white p-4 mb-4 shadow rounded">
-      <p>{recorded.toLocaleTimeString("uk-UA", {
+      <li>{recorded.toLocaleTimeString("uk-UA", {
   timeZone: "Europe/Kyiv",
   timeStyle: "short",
-})} - {reason}</p>
-    </article>
+})} - {reason}</li>
   ))
 }
+</ul>
 
 
 
