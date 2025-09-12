@@ -1,4 +1,4 @@
-import { db, Record, Reason } from 'astro:db';
+import { db, Record } from 'astro:db';
 
 
 export default async function() {

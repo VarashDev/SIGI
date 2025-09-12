@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { db, Record, Reason, desc, eq, sql } from 'astro:db';
+import { db, Record, desc, eq, sql } from 'astro:db';
 
 if (Astro.request.method === 'POST') {
   const formData = await Astro.request.formData();
@@ -50,11 +50,9 @@ title="Sigi"
 {
   records.map(({ id, recorded, reason }) => (
     <article class="bg-white p-4 mb-4 shadow rounded">
-      <p>ID: {id}</p>
       <p>Recorded: {recorded.toLocaleString("uk-UA", {
   timeZone: "Europe/Kyiv",
-})}</p>
-      <p>Reason: {reason}</p>
+})} - {reason}</p>
     </article>
   ))
 }
