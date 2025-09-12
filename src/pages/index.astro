@@ -50,7 +50,7 @@ title="Sigi"
 {
   records.map(({ id, recorded, reason }) => (
     <article class="bg-white p-4 mb-4 shadow rounded">
-      <p>Recorded: {recorded.toLocaleString("uk-UA", {
+      <p>{recorded.toLocaleString("uk-UA", {
   timeZone: "Europe/Kyiv",
 })} - {reason}</p>
     </article>
