@@ -26,7 +26,7 @@ const todaysRecords = await db
       sql`date('now', '+3 hours')`
     )
   )
-  .orderBy();
+  .orderBy(desc(Record.id));
 
 const todaysCount = todaysRecords.length;
 ---
