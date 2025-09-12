@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { db, Record, Reason, desc } from 'astro:db';
+import { db, Record, Reason, desc, eq, sql } from 'astro:db';
 
 if (Astro.request.method === 'POST') {
   const formData = await Astro.request.formData();
@@ -15,6 +15,16 @@ if (Astro.request.method === 'POST') {
 // Render the new list of comments on each request
 const records = await db.select().from(Record).orderBy(desc(Record.id));;
 const reasons = await db.select().from(Reason).orderBy(Reason.order);
+const result = await db
+  .select({
+    count: sql`count(*)`.as("count")
+  })
+  .from(Record)
+  .where(
+    eq(sql`date(${Record.recorded}, '+3 hours')`, sql`date('now', '+3 hours')`)
+  );
+
+const count = result[0].count;
 ---
 <Layout
 title="Sigi"
@@ -38,7 +48,7 @@ title="Sigi"
   <button type="submit" class="bg-amber-700 text-white text-xl font-bold rounded shadow py-2 px-4 mx-auto">Submit</button>
 </form>
 
-<h2>Comments</h2>
+<h2 class="text-2xl font-black m-4">Today: {count}</h2>
 
 {
   records.map(({ id, recorded, reason }) => (
