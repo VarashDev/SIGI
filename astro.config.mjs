@@ -5,9 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 
 import db from '@astrojs/db';
 
-import vercel from '@astrojs/vercel';
-
 import clerk from "@clerk/astro";
+
+import netlify from '@astrojs/netlify';
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,6 +16,8 @@ export default defineConfig({
   },
 
   integrations: [db(), clerk()],
+
   output: "server",
-  adapter: vercel(),
+
+  adapter: netlify(),
 });
