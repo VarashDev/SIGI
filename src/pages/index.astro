@@ -3,12 +3,15 @@ import Layout from "../layouts/Layout.astro";
 
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/astro/components'
 
-import { db, Record, desc, eq, sql } from 'astro:db';
+import { db, Record, desc, sql, like } from 'astro:db';
+import { eq, and } from 'drizzle-orm';
 
 const uaDate = new Date().toLocaleDateString("uk-UA", {
   timeZone: "Europe/Kyiv",
   dateStyle: "long",
 });
+
+const { userId } = Astro.locals.auth()
 
 if (Astro.request.method === 'POST') {
   const formData = await Astro.request.formData();
@@ -16,18 +19,20 @@ if (Astro.request.method === 'POST') {
   const recorded = new Date();
   if (typeof reason === 'string') {
     // Insert form data into the Comment table
-    await db.insert(Record).values({ reason, recorded });
+    await db.insert(Record).values({ reason, recorded, userId });
   }
 }
 
 const todaysRecords = await db
   .select()
   .from(Record)
-  .where(
-    eq(
+  .where(and(like(Record.userId, userId), 
+eq(
       sql`date(${Record.recorded}, '+3 hours')`,
       sql`date('now', '+3 hours')`
     )
+  )
+    
   )
   .orderBy(desc(Record.id));
 
@@ -38,6 +43,7 @@ title="Sigi"
 >
 
 <SignedIn>
+<div>{userId}</div>
 
 <form method="POST" style="display: grid" class="rounded bg-amber-300 p-4">
   <label for="reason">Reason</label>
@@ -73,7 +79,7 @@ title="Sigi"
             minute: "2-digit",
           })}
         </td>
-        <td class="px-4 py-2 text-sm text-gray-800">{record.reason}</td>
+        <td class="px-4 py-2 text-sm text-gray-800">{record.reason} {record.userId}</td>
       </tr>
     ))}
   </tbody>

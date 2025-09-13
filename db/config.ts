@@ -5,6 +5,7 @@ const Record = defineTable({
     id: column.number({ primaryKey: true, autoincrement: true }),
     recorded: column.date(),
     reason: column.text(),
+    userId: column.text(),
   }
 })
 
