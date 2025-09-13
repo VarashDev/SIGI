@@ -7,13 +7,15 @@ import db from '@astrojs/db';
 
 import netlify from '@astrojs/netlify';
 
+import clerk from "@clerk/astro";
+
 // https://astro.build/config
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
 
-  integrations: [db()],
+  integrations: [db(), clerk()],
   output: "server",
   adapter: netlify(),
 });

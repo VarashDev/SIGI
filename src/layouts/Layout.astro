@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 const {title} = Astro.props;
+import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/astro/components'
 ---
 <html lang="en">
   <head>
@@ -10,10 +11,18 @@ const {title} = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="bg-amber-100">
-    <header class="bg-amber-400 text-amber-800 text-2xl font-semibold text-center p-2">
+    <header class="bg-amber-400 text-amber-700 text-xl font-semibold text-center p-2">
         <nav>
             <div class="px-24 py-2 max-w-7xl mx-auto w-full max-sm:px-5">
-                 <span class="uppercase"><a href="/">Sigi</a></span>
+                 <div class="uppercase"><a href="/">Sigi</a></div>
+                 <div>
+        <SignedOut>
+          <SignInButton mode="modal" />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+                 </div>
             </div>
         </nav>
     </header>
@@ -23,7 +32,7 @@ const {title} = Astro.props;
 
     </main>
     <footer>
-      <div class="bg-amber-400 text-amber-700 text-center p-4 uppercase">© 2025 <a href="/">Sigi</a></div>
+      <div class="bg-amber-400 text-sm text-amber-700 text-center p-4 uppercase">© 2025 <a href="/">Sigi</a></div>
     </footer>
   </body>
 </html>
