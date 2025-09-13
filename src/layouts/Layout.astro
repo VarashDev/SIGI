@@ -13,15 +13,15 @@ import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/astro/comp
   <body class="bg-amber-100">
     <header class="bg-amber-400 text-amber-700 text-xl font-semibold text-center p-2">
         <nav>
-            <div class="px-24 py-2 max-w-7xl mx-auto w-full max-sm:px-5">
+            <div class="flex justify-between px-24 py-2 max-w-7xl mx-auto w-full max-sm:px-5">
                  <div class="uppercase"><a href="/">Sigi</a></div>
                  <div>
-        <SignedOut>
-          <SignInButton mode="modal" />
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+                  <SignedOut>
+                    <SignInButton mode="modal" />
+                  </SignedOut>
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
                  </div>
             </div>
         </nav>
