@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 import db from '@astrojs/db';
 
-import netlify from '@astrojs/netlify';
+import vercel from '@astrojs/vercel';
 
 import clerk from "@clerk/astro";
 
@@ -17,5 +17,5 @@ export default defineConfig({
 
   integrations: [db(), clerk()],
   output: "server",
-  adapter: netlify(),
+  adapter: vercel(),
 });
