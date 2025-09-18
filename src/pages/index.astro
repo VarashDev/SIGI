@@ -1,5 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import AddRecordForm from "../components/AddRecordForm.astro";
+import TodaysRecords from "../components/TodaysRecords.astro";
 
 import { SignedIn, SignedOut, UserButton, SignInButton } from '@clerk/astro/components'
 
@@ -37,30 +39,19 @@ eq(
   .orderBy(desc(Record.id));
 
 const todaysCount = todaysRecords.length;
+
+
 ---
 <Layout
 title="Sigi"
 >
 
 <SignedIn>
-<!-- <div>{userId}</div> -->
 
-<form method="POST" style="display: grid" class="rounded bg-amber-300 p-4">
-  <label for="reason">Reason</label>
-  <select id="reason" name="reason" required class="bg-white mb-4 text-xl">
-    <option value="Good morning">Good morning</option>
-    <option value="Brake">Brake</option>
-    <option value="After meal">After meal</option>
-	<option value="Emocional">Emocional</option>
-	<option value="Good night">Good night</option>
-	<option value="Other">Other</option>
-  </select>
-
-  <button type="submit" class="bg-amber-700 text-white text-xl font-bold rounded shadow py-2 px-4 mx-auto">Submit</button>
-</form>
+  <AddRecordForm />
 
 <h1 class="text-xl font-semibold m-4">{uaDate}</h1>
-<h2 class="text-2xl font-black m-4">Today: {todaysCount}</h2>
+<!-- <h2 class="text-2xl font-black m-4">Today: {todaysCount}</h2>
 
 <table class="min-w-full border border-gray-200 divide-y divide-gray-200 shadow">
   <thead class="bg-amber-200">
@@ -83,7 +74,10 @@ title="Sigi"
       </tr>
     ))}
   </tbody>
-</table>
+</table> -->
+
+    <!-- Render the table server-side, deferred -->
+    <TodaysRecords server:defer todaysRecords={todaysRecords} todaysCount={todaysCount} />
 
 </SignedIn>
 <SignedOut>
