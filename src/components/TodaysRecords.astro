@@ -1,6 +1,25 @@
 ---
 // @ts-nocheck
-const { todaysRecords, todaysCount } = Astro.props;
+import { db, Record, desc, sql, like } from 'astro:db';
+import { eq, and } from 'drizzle-orm';
+
+const { userId } = Astro.locals.auth();
+
+const todaysRecords = await db
+  .select()
+  .from(Record)
+  .where(
+    and(
+      like(Record.userId, userId),
+      eq(
+        sql`date(${Record.recorded}, '+3 hours')`,
+        sql`date('now', '+3 hours')`
+      )
+    )
+  )
+  .orderBy(desc(Record.id));
+
+const todaysCount = todaysRecords.length;
 ---
 
 <h2 class="text-2xl font-black m-4">Today: {todaysCount}</h2>
@@ -15,13 +34,13 @@ const { todaysRecords, todaysCount } = Astro.props;
   <tbody class="divide-y divide-gray-200">
     {todaysRecords.map((record, idx) => (
       <tr class={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-<td class="w-24 px-4 py-2 text-sm text-gray-800">
-  {new Date(record.recorded).toLocaleTimeString("uk-UA", {
-    timeZone: "Europe/Kyiv",
-    hour: "2-digit",
-    minute: "2-digit",
-  })}
-</td>
+        <td class="w-24 px-4 py-2 text-sm text-gray-800">
+          {new Date(record.recorded).toLocaleTimeString("uk-UA", {
+            timeZone: "Europe/Kyiv",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </td>
         <td class="px-4 py-2 text-sm text-gray-800">{record.reason}</td>
       </tr>
     ))}

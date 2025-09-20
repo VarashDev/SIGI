@@ -26,20 +26,7 @@ if (Astro.request.method === 'POST') {
   }
 }
 
-const todaysRecords = await db
-  .select()
-  .from(Record)
-  .where(and(like(Record.userId, userId), 
-eq(
-      sql`date(${Record.recorded}, '+3 hours')`,
-      sql`date('now', '+3 hours')`
-    )
-  )
-    
-  )
-  .orderBy(desc(Record.id));
 
-const todaysCount = todaysRecords.length;
 
 
 ---
@@ -52,33 +39,32 @@ title="Sigi"
   <AddRecordForm />
 
 <h1 class="text-xl font-semibold m-4">{uaDate}</h1>
-<!-- <h2 class="text-2xl font-black m-4">Today: {todaysCount}</h2>
 
-<table class="min-w-full border border-gray-200 divide-y divide-gray-200 shadow">
-  <thead class="bg-amber-200">
-    <tr>
-      <th class="w-24 px-4 py-2 text-left text-sm font-semibold text-gray-700">Time</th>
-      <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Reason</th>
-    </tr>
-  </thead>
-  <tbody class="divide-y divide-gray-200">
-    {todaysRecords.map((record, idx) => (
-      <tr class={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-        <td class="w-24 px-4 py-2 text-sm text-gray-800">
-          {record.recorded.toLocaleTimeString("uk-UA", {
-            timeZone: "Europe/Kyiv",
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </td>
-        <td class="px-4 py-2 text-sm text-gray-800">{record.reason}</td>
-      </tr>
-    ))}
-  </tbody>
-</table> -->
-
-    <!-- Render the table server-side, deferred -->
-    <TodaysRecords server:defer todaysRecords={todaysRecords} todaysCount={todaysCount} />
+<TodaysRecords server:defer>
+  <div class="flex justify-center items-center py-6">
+    <svg
+      class="animate-spin h-8 w-8 text-amber-500"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        class="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      ></circle>
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+      ></path>
+    </svg>
+    <span class="ml-3 text-gray-600 text-sm">Завантаження…</span>
+  </div>
+</TodaysRecords>
 
 </SignedIn>
 <SignedOut>
